@@ -1,65 +1,72 @@
-import { Connection } from "@solana/web3.js"
+import { Connection } from "@solana/web3.js";
 
-import axios from 'axios';
+import axios from "axios";
 
 let LAST_UPDATED: number | null = null;
-let price:{[key: string] :{
-    price:string
-}} = {}
+let price: {
+  [key: string]: {
+    price: string;
+  };
+} = {};
 const TOKEN_REFRESH = 60 * 1000;
 export interface TokenDetails {
-    name: string;
-    mint: string;
-    native: boolean;
-    price: string;
-    image: string;
-    
+  name: string;
+  mint: string;
+  native: boolean;
+  price: string;
+  image: string;
+  decimals: number;
 }
 
-
-export const SUPPORTED_TOKENS: TokenDetails[] = [{
+export const SUPPORTED_TOKENS: TokenDetails[] = [
+  {
     name: "SOL",
     mint: "So11111111111111111111111111111111111111112",
     native: true,
     price: "180",
-    image: "https://upload.wikimedia.org/wikipedia/commons/3/34/Solana_cryptocurrency_two.jpg",
-    
-}, {
+    image:
+      "https://seeklogo.com/images/S/solana-sol-logo-12828AD23D-seeklogo.com.png",
+    decimals: 9,
+  },
+  {
     name: "USDC",
     mint: "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
     native: false,
     price: "1",
-    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT1vAKYEl0YffTpWSxrqEi_gmUsl-0BuXSKMQ&s",
-    
-}, {
+    image:
+      "https://icones.pro/wp-content/uploads/2024/04/blue-usdc-icon-symbol-logo.png",
+    decimals: 6,
+  },
+  {
     name: "USDT",
     mint: "Es9vMFrzaCERmJfrF4H2FYD4KCoNkY11McCe8BenwNYB",
     native: false,
     price: "1",
-    image: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvSxrpym7ij1Hf6zQOltcDORlrJGyj1kPf3A&s",
-    
-}
-]
+    image:
+      "https://cloudfront-us-east-1.images.arcpublishing.com/coindesk/KTF6M73FKBACNI5JQ4S3EW7MRI.png",
+    decimals: 6,
+  },
+];
 
-// check the link if error occurs 
-export const connection = new Connection("https://solana-mainnet.g.alchemy.com/v2/oRlwZdF1YHNVuKVd_TVvdPlHPjuzMLnX")
-
+// check the link if error occurs
+export const connection = new Connection(
+  "https://solana-mainnet.g.alchemy.com/v2/oRlwZdF1YHNVuKVd_TVvdPlHPjuzMLnX"
+);
 
 export async function getTokens() {
-    if(!LAST_UPDATED || new Date().getTime() - LAST_UPDATED < TOKEN_REFRESH){
-        const response = await axios.get("https://price.jup.ag/v6/price?ids=SOL,USDC,USDT");
+  if (!LAST_UPDATED || new Date().getTime() - LAST_UPDATED < TOKEN_REFRESH) {
+    const response = await axios.get(
+      "https://price.jup.ag/v6/price?ids=SOL,USDC,USDT"
+    );
 
-            price = response.data.data;
-            LAST_UPDATED = new Date().getTime();
+    price = response.data.data;
+    LAST_UPDATED = new Date().getTime();
+  }
 
-
-    }
-
-    return SUPPORTED_TOKENS.map( s => ({
-        ...s,
-        price: price[s.name].price
-    }))
-
+  return SUPPORTED_TOKENS.map((s) => ({
+    ...s,
+    price: price[s.name].price,
+  }));
 }
 
 getTokens();

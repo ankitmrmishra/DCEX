@@ -13,12 +13,12 @@ export async function GET(req: NextRequest){
   const tokens =   supportedTokens.map((token, index) =>({
             ...token,
             balance: balances[index],
-            usdBalance: balances[index] * Number(token.price)
+            usdBalance: (balances[index] * Number(token.price)).toFixed(2)
         }))
 
         return NextResponse.json({
             tokens,
-            totalbal : tokens.reduce((acc, val) => acc + val.usdBalance, 0)
+            totalbal: tokens.reduce((acc, val) => acc + Number(val.usdBalance), 0).toFixed(2)
         })
 
 }

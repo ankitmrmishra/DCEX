@@ -1,7 +1,7 @@
 "use client"
 import React from 'react'
 import {signIn, signOut, useSession} from "next-auth/react"
-import Button from './Button'
+import {Button} from './Button'
 const Navbar = () => {
     const session = useSession()
   return (
