@@ -24,7 +24,7 @@ const UserBalance = async () => {
   return { error: null, UsersolWallet };
 };
 
-export default async function () {
+export default async function DashBoard() {
   const userwallet = await UserBalance();
   if (userwallet?.error || !userwallet?.UsersolWallet.publicKey) {
     return <>No solana wallet found</>;
