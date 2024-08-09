@@ -4,6 +4,7 @@ import { IoSwapVerticalOutline } from "react-icons/io5";
 import { TokenWithBalance } from "../api/hooks/useTokens";
 import { debounce } from "lodash";
 import axios from "axios";
+import { Button } from "./Button";
 export function Swap({
   publicKey,
   tokenBalances,
@@ -133,6 +134,23 @@ export function Swap({
             setBaseAmmount(value);
           }}
         />
+      </div>
+      <div className='flex justify-end items-end pt-5'>
+        <Button
+          onClick={async () => {
+            try {
+              const res = await axios.post("/api/swap", {
+                quoteResponse,
+              });
+              if (res.data.txnId) {
+                alert("Swap done!");
+              }
+            } catch (e) {
+              alert("Error while sending a txn");
+            }
+          }}>
+          Swap
+        </Button>
       </div>
     </div>
   );
