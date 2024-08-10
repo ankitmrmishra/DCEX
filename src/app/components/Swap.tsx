@@ -205,7 +205,7 @@ function SwapInputrow({
   );
 }
 
-function AssetSelector({
+export function AssetSelector({
   selectedToken,
   onSelect,
 }: {

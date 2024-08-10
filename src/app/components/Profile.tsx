@@ -8,6 +8,7 @@ import { TokenWithBalance, useTokens } from "../api/hooks/useTokens";
 import { TabButton } from "./Button";
 import { Swap } from "./Swap";
 import { useMediaQuery } from "../api/hooks/useMediaQuery";
+import AddFunds from "./AddFunds";
 
 type Tab = "Tokens" | "send" | "add_funds" | "swap" | "withdraw";
 
@@ -84,7 +85,7 @@ const Profile = ({ publicKey }: { publicKey: string }) => {
           <ComingSoon />
         </div>
         <div className={`${activetab === "add_funds" ? "visible" : "hidden"}`}>
-          <ComingSoon />
+          <AddFunds publicKey={publicKey} />
         </div>
         <div className={`${activetab === "withdraw" ? "visible" : "hidden"}`}>
           <ComingSoon />
