@@ -123,7 +123,7 @@ const DepositThroughWallet: React.FC<DepositThroughWallet> = ({
         Your available {asset.name}:
         {tokenBalances?.tokens &&
           tokenBalances.tokens.map((token, index) => (
-            <span>{asset.name === token.name && token.usdBalance}</span>
+            <span key={index}>{asset.name === token.name && token.usdBalance}</span>
           ))}
       </p>
       <div className='mb-4'>
