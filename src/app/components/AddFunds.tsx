@@ -135,9 +135,9 @@ const DepositThroughWallet: React.FC<DepositThroughWallet> = ({
         </div>
       </div>
       <div className='grid grid-cols-3 gap-4 mb-4'>
-        {[1, 2, 5].map((value) => (
+        {[1, 2, 5].map((value, index) => (
           <button
-            key={value}
+            key={index}
             onClick={() => handleAmountChange(value)}
             className='py-2 px-4 bg-gray-200 rounded-md hover:bg-gray-300'>
             ${value}
