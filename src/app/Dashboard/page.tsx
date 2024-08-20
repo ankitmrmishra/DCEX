@@ -12,7 +12,7 @@ export default async function DashBoard() {
   }
 
   return (
-    <div className='flex justify-center align-middle items-center p-10'>
+    <div className='flex justify-center align-middle items-center md:p-10 px-2 py-5'>
       <Profile publicKey={userwallet.UsersolWallet.publicKey} />
     </div>
   );
