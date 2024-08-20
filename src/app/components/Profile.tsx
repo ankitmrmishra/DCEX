@@ -40,7 +40,7 @@ const Profile = ({ publicKey }: { publicKey: string }) => {
   }
 
   return (
-    <div className='flex flex-col lg:flex-row justify-center items-center align-middle p-2 bg-white rounded-lg gap-4 w-full max-w-4xl mx-auto'>
+    <div className='flex flex-col lg:flex-row justify-center items-center align-middle p-2 bg-white rounded-lg gap-4  max-w-4xl mx-auto'>
       <div className='flex flex-col items-center lg:items-start'>
         <div className='name_and_details flex flex-col lg:flex-row items-center justify-center lg:justify-start gap-3 align-middle p-5'>
           <img
