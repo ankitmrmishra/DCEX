@@ -9,7 +9,7 @@ import { TokenWithBalance, useTokens } from "../api/hooks/useTokens";
 import { AssetSelector } from "./Swap";
 import { SUPPORTED_TOKENS } from "@/lib/constants";
 import { LAMPORTS_PER_SOL } from "@solana/web3.js";
-import { UserBalance } from "../Dashboard/page";
+import { UserBalance } from "../Dashboard/UserBalance";
 import { QRCodeWalletScanner } from "./QRcodeWallet";
 
 const AddFunds = ({ publicKey }: { publicKey: string }) => {
