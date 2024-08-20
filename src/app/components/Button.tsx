@@ -7,7 +7,7 @@ export const Button = ({
 }: {
   children: React.ReactNode;
   onClick: () => void;
-  disable: boolean
+  disable:  boolean | undefined
 }) => {
   return (
     <div >
