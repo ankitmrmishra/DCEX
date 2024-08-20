@@ -18,9 +18,9 @@ const HeroPage = () => {
 
   return (
     <main className={archivo.className}>
-      <div className='bg-[#0A1929] h-[100vh] text-white flex justify-center items-center align-middle lg:p-16 p-6 '>
-        <div className='textAreahere flex flex-col justify-center items-center align-middle text-center '>
-          <span className='lg:text-8xl text-3xl text-blue-500 font-bold '>
+      <div className='bg-black  text-center   max-h-max text-white flex justify-center items-center align-middle lg:p-16 p-6 '>
+        <div className='textAreahere  px-5 flex flex-col justify-center items-center align-middle text-center '>
+          <span className='lg:text-8xl text-3xl text-white font-bold '>
             Lightning-Fast Trades, Minimal Fees
           </span>{" "}
           <br />
@@ -34,6 +34,7 @@ const HeroPage = () => {
           <div className='pt-8'>
             {session.data?.user ? (
               <Button
+              disable={false}
                 onClick={() => {
                   router.push("/Dashboard");
                 }}>
@@ -41,6 +42,7 @@ const HeroPage = () => {
               </Button>
             ) : (
               <Button
+              disable={false}
                 onClick={() => {
                   signIn();
                 }}>

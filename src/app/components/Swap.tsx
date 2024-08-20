@@ -57,6 +57,8 @@ export function Swap({
     fetchQuote,
   ]);
 
+
+
   useEffect(() => {
     if (!baseAmmount) {
       setQuoteAmmount("");
@@ -79,6 +81,16 @@ export function Swap({
     };
   }, [baseAmmount, baseAsset.mint, quoteAssest.mint, debouncedFetchQuote]);
 
+
+ 
+    const currentBalance = tokenBalances?.tokens.find((x) => x.name === quoteAssest.name)
+      ?.balance 
+     var disabled = true;
+      if((Number)(currentBalance) >= (Number)(quoteAmmount)){
+        disabled= false;
+      }
+
+  
   return (
     <div className='p-4'>
       <div className=''>
@@ -125,10 +137,7 @@ export function Swap({
           title='You Get'
           topborderenabled={false}
           bottomborderenabled={true}
-          currentbalance={` ${
-            tokenBalances?.tokens.find((x) => x.name === quoteAssest.name)
-              ?.balance
-          } ${quoteAssest.name}`}
+          currentbalance={` ${currentBalance} ${quoteAssest.name}`}
           amount={quoteAmmount}
           onAmountchange={(value: string) => {
             setBaseAmmount(value);
@@ -137,6 +146,7 @@ export function Swap({
       </div>
       <div className='flex justify-end items-end pt-5'>
         <Button
+        disable={disabled}
           onClick={async () => {
             try {
               const res = await axios.post("/api/swap", {
@@ -149,7 +159,7 @@ export function Swap({
               alert("Error while sending a txn");
             }
           }}>
-          Swap
+          {(Number)(currentBalance) < (Number)(quoteAmmount)  ? "Insufficient balance" : "Swap"}
         </Button>
       </div>
     </div>

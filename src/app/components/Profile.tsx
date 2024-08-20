@@ -127,6 +127,8 @@ function Assets({
   if (loading) {
     return "loading.....";
   }
+  
+  
   return (
     <div className=''>
       <div className='text-sm text-white flex justify-center gap-28 align-middle items-center '>

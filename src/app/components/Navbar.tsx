@@ -11,7 +11,8 @@ import {
 const Navbar = () => {
   const session = useSession();
   return (
-    <div className='flex justify-between items-center align-middle p-5  bg-[#19222e]'>
+    <div className='flex  top-5 left-[25%]  gap-16 rounded-xl bg-transparent justify-center items-center align-middle p-5 '>
+      <div className="flex justify-center items-center align-middle gap-16 p-3 bg-white/20 rounded-xl">
       <span className='text-blue-700 text-2xl text-center font-bold'>
         DesiXchange{" "}
       </span>
@@ -45,6 +46,7 @@ const Navbar = () => {
         <div>
           {session.data?.user ? (
             <Button
+            disable={false}
               onClick={() => {
                 signOut();
               }}>
@@ -52,6 +54,7 @@ const Navbar = () => {
             </Button>
           ) : (
             <Button
+            disable={false}
               onClick={() => {
                 signIn();
               }}>
@@ -60,6 +63,7 @@ const Navbar = () => {
           )}
         </div>
       </main>
+      </div>
     </div>
   );
 };

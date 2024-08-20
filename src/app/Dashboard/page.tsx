@@ -3,7 +3,7 @@ import Profile from "../components/Profile";
 import { authConfig } from "@/lib/auth";
 import db from "@/app/db";
 
-const UserBalance = async () => {
+export const UserBalance = async () => {
   const session = await getServerSession(authConfig);
 
   const UsersolWallet = await db.solWallet.findFirst({

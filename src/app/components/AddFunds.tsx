@@ -1,12 +1,16 @@
-import React, { useState, useEffect } from "react";
+
+import React, { useState, useEffect, useCallback } from "react";
 import { FaWallet } from "react-icons/fa6";
 import { useConnection, useWallet, Wallet } from "@solana/wallet-adapter-react";
 import { useWalletModal } from "@solana/wallet-adapter-react-ui";
-
+import * as web3 from '@solana/web3.js';
 import Image from "next/image";
 import { TokenWithBalance, useTokens } from "../api/hooks/useTokens";
 import { AssetSelector } from "./Swap";
 import { SUPPORTED_TOKENS } from "@/lib/constants";
+import { LAMPORTS_PER_SOL } from "@solana/web3.js";
+import { UserBalance } from "../Dashboard/page";
+import { QRCodeWalletScanner } from "./QRcodeWallet";
 
 const AddFunds = ({ publicKey }: { publicKey: string }) => {
   const { wallet } = useWallet();
@@ -14,6 +18,9 @@ const AddFunds = ({ publicKey }: { publicKey: string }) => {
   const { tokenBalances, loading } = useTokens(publicKey);
 
   const [showOtherComponent, setShowOtherComponent] = useState(false);
+  const [showScannerComponent, setshowScannerComponent] = useState(false);
+  const openModal = () => setshowScannerComponent(true);
+  const closeModal = () => setshowScannerComponent(false);
 
   const connectWallet = ({ wallet }: { wallet: Wallet | null }) => {
     if (!wallet) {
@@ -32,9 +39,11 @@ const AddFunds = ({ publicKey }: { publicKey: string }) => {
         <DepositThroughWallet
           tokenBalances={tokenBalances}
           loading={loading}
-          publickey={publicKey}
+          publicKeyy={publicKey}
+          
           onClose={() => setShowOtherComponent(false)}
         />
+      
       ) : (
         <div className=''>
           <span className='text-2xl font-bold flex flex-col'>
@@ -43,6 +52,7 @@ const AddFunds = ({ publicKey }: { publicKey: string }) => {
               Select the source to add assets into your TipLink account
             </span>
           </span>
+          
           <div
             className='mt-5 border border-gray-700 p-5 rounded-xl flex align-top items-start gap-3'
             onClick={() => connectWallet({ wallet })}>
@@ -59,61 +69,123 @@ const AddFunds = ({ publicKey }: { publicKey: string }) => {
                 wallet
               </span>
             </div>
+            
+          </div>
+          <div
+            className='mt-5 border border-gray-700 p-5 rounded-xl flex align-top items-start gap-3'
+            onClick={openModal}>
+            <div className='text-2xl'>
+              <FaWallet />
+            </div>
+            <div className='flex flex-col'>
+              <span className='font-bold'>To this Solana Wallet Address</span>
+              <span className='text-xs text-gray-500'>
+                Deposit assets via this Solana wallet address
+              </span>
+            </div>
+            
           </div>
         </div>
       )}
+        <QRCodeWalletScanner isOpen={showScannerComponent} onClose={closeModal} publicKey={publicKey}/>
+        
     </div>
   );
 };
 
 export default AddFunds;
 
-interface DepositThroughWallet {
+
+
+
+const DepositThroughWallet = ({ tokenBalances, loading, publicKeyy, onClose }:{
   onClose: () => void;
-  publickey: string;
+  publicKeyy: string
   tokenBalances: {
     totalBalance: number;
     tokens: TokenWithBalance[];
   } | null;
   loading: boolean;
-}
-
-const DepositThroughWallet: React.FC<DepositThroughWallet> = ({
-  tokenBalances,
-  loading,
-  publickey,
-  onClose,
 }) => {
-  const [amount, setAmount] = useState<number>(0);
-  const [amountSOL, setAmountSOL] = useState<number>(0);
-  const { publicKey, connected } = useWallet();
-  const [availableSOL, setAvailableSOL] = useState<number>(0);
+  const [amount, setAmount] = useState(0);
+  const [amountSOL, setAmountSOL] = useState(0);
+  const { publicKey, connected, sendTransaction } = useWallet();
   const [asset, setAsset] = useState(SUPPORTED_TOKENS[1]);
+  const { connection } = useConnection();
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [error, setError] = useState(null);
+// if(!tokenBalances?.tokens[0].price) return;
+// else{
+//   setAmountSOL(tokenBalances?.tokens[0].price)
+// }
+   
+   
+  //  tokenBalances?.tokens &&
+  //   tokenBalances.tokens.map((token) => (
+  //     if(asset.name === token.name) setAmountSOL(token.price)
+  //   ))
+   
+  
+   
 
-  useEffect(() => {}, [connected, publicKey]);
+  useEffect(() => {
+    // Any side effects you want to run when connected or publicKey changes
+  }, [connected, publicKey]);
 
-  const handleAmountChange = (value: number) => {
+  const handleAmountChange = useCallback((value:number) => {
+    console.log(value);
+    
     setAmount(value);
-    // Convert USD to SOL (this is a placeholder conversion)
-    setAmountSOL(value / 20); // Assuming 1 SOL = $20 USD
-  };
+    if(!tokenBalances?.tokens[0].price) return;
+    const price = parseFloat(tokenBalances.tokens[0].price);
+    setAmountSOL(value / price);
+  }, []);
 
-  const handleConfirmDeposit = () => {
-    // Implement deposit logic here
-    console.log(`Depositing ${amount} USD (${amountSOL} SOL)`);
-  };
+  const sendSol = useCallback(async (event: { preventDefault: () => void; }) => {
+    event.preventDefault();
+    if (!publicKey) {
+      // setError("Wallet not connected");
+      return;
+    }
+
+    setIsProcessing(true);
+    setError(null);
+
+    try {
+      const transaction = new web3.Transaction();
+      const recipientPubKey = new web3.PublicKey(publicKeyy);
+      const lamports = Math.floor(amountSOL * LAMPORTS_PER_SOL);
+      const sendSolInstruction = web3.SystemProgram.transfer({
+        fromPubkey: publicKey,
+        toPubkey: recipientPubKey,
+        lamports: lamports,
+      });
+
+      transaction.add(sendSolInstruction);
+      const signature = await sendTransaction(transaction, connection);
+      console.log("Transaction sent:", signature);
+      // You might want to add a success message or callback here
+    } catch (error) {
+      console.error("Error sending transaction:", error);
+      // setError(error.message);
+    } finally {
+      setIsProcessing(false);
+    }
+  }, [publicKey, connection, sendTransaction, amountSOL, publicKeyy]);
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
 
   return (
-    <div className=' mx-auto p-6 bg-white rounded-lg shadow-md'>
+    <div className='mx-auto p-6 bg-white rounded-lg shadow-md'>
       <h2 className='text-2xl font-bold mb-4'>Deposit via connected wallet</h2>
-      <p className='mb-4'>Specify asset and amount:</p>
+      {/* <p className='mb-4'>Specify asset and amount:</p>
       <div className='mb-4'>
         <label className='block mb-2'>Asset:</label>
         <div className='flex items-center border rounded-md p-2'>
           <AssetSelector
-            onSelect={(asset) => {
-              setAsset(asset);
-            }}
+            onSelect={setAsset}
             selectedToken={asset}
           />
         </div>
@@ -123,9 +195,9 @@ const DepositThroughWallet: React.FC<DepositThroughWallet> = ({
         Your available {asset.name}:
         {tokenBalances?.tokens &&
           tokenBalances.tokens.map((token, index) => (
-            <span key={index}>{asset.name === token.name && token.usdBalance}</span>
+            <span key={index}>{asset.name === token.name && token.usdBalance} </span>
           ))}
-      </p>
+      </p> */}
       <div className='mb-4'>
         <div className='text-center text-3xl font-bold'>
           ${amount.toFixed(2)} USD
@@ -144,6 +216,7 @@ const DepositThroughWallet: React.FC<DepositThroughWallet> = ({
           </button>
         ))}
       </div>
+      {error && <div className="text-red-500 mb-4">{error}</div>}
       <div className='flex justify-between'>
         <button
           onClick={onClose}
@@ -151,12 +224,13 @@ const DepositThroughWallet: React.FC<DepositThroughWallet> = ({
           Cancel
         </button>
         <button
-          onClick={handleConfirmDeposit}
-          className='py-2 px-4 bg-blue-500 text-white rounded-md hover:bg-blue-600'
-          disabled={amount <= 0}>
-          Confirm Deposit
+          onClick={sendSol}
+          className='py-2 px-4 bg-blue-500 text-white rounded-md hover:bg-blue-600 disabled:bg-gray-400'
+          disabled={amount <= 0 || isProcessing}>
+          {isProcessing ? 'Processing...' : 'Confirm Deposit'}
         </button>
       </div>
     </div>
   );
 };
+
