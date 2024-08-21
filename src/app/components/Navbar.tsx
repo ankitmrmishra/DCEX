@@ -82,21 +82,21 @@ const Navbar = () => {
         <div className="hidden lg:block">
           <WalletMultiButton
             style={buttonStyle}
-            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold  px-4 rounded"
           />
         </div>
 
         {/* Burger Menu Content */}
         {isMenuOpen && (
-          <div className="absolute top-16 right-5 bg-white p-5 rounded-lg shadow-lg z-50 lg:hidden">
-            <div className="flex items-center justify-between mb-4">
-              
+          <div className="absolute top-20 right-1 flex justify-center items-center h-full align-middle flex-col w-full bg-black text-white p-2 rounded-lg shadow-lg z-50 lg:hidden">
+            <div className="flex items-center justify-between  gap-3">
+              <span>Your Wallet</span>
               <WalletMultiButton
                 style={buttonStyle}
                 className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
               />
             </div>
-            
+
             
           </div>
         )}
