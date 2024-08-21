@@ -19,13 +19,13 @@ const HeroPage = () => {
   return (
     <main className={archivo.className}>
       <div className='bg-black  text-center   max-h-max text-white flex justify-center items-center align-middle lg:p-16 p-6 '>
-        <div className='textAreahere  px-5 flex flex-col justify-center items-center align-middle text-center '>
+        <div className='textAreahere  px-5 flex flex-col justify-center items-center align-middle text-center py-16'>
           <span className='lg:text-8xl text-3xl text-white font-bold '>
-            Lightning-Fast Trades, Minimal Fees
+          Secure Your Digital Assets with <span className="text-[#ff6e6c]">BharatWallet</span> 
           </span>{" "}
           <br />
-          <span className='lg:text-xl text-sm text-white/45 italic'>
-            Trade crypto securely and efficiently on our decentralized platform.
+          <span className='lg:text-xl text-sm text-[#94a1b2 ] italic'>
+          The fastest, most secure web-based wallet for your crypto needs
           </span>
           <div className='pt-4'>
             Powered By
