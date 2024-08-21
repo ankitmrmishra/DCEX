@@ -1,10 +1,16 @@
-import Image from "next/image";
-import HeroPage from "./components/HeroPage";
 
-export default function Home() {
+import { getSession } from "next-auth/react";
+import HeroPage from "./components/HeroPage";
+import DashBoard from "./Dashboard/page";
+
+
+export default async function Home() {
+  
+  const session = await getSession()
   return (
     <main className="bg-black">
-      <HeroPage/>
+      {session?.user ? <HeroPage />  :  <DashBoard />}
+      
     </main>
   );
 }

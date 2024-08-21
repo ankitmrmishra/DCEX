@@ -44,7 +44,7 @@ const Navbar = () => {
 
   return (
     <div className="flex top-5 left-[25%] gap-16 rounded-xl bg-transparent justify-center items-center align-middle p-5">
-      <div className="flex justify-center items-center align-middle gap-16 p-3 bg-white/20 rounded-xl w-full">
+      <div className="flex justify-center items-center align-middle gap-16 p-3 bg-white/20 rounded-xl px-10">
         <span
           onClick={() => {
             router.push("/");
