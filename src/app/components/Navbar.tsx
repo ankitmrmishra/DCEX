@@ -21,8 +21,8 @@ const Navbar = () => {
         setButtonStyle({
           backgroundColor: "lightblue",
           color: "black",
-          height: "2rem",
-          fontSize: "0.875rem",
+          height: "3.5rem",
+          fontSize: "2rem",
           padding: "0.5rem 1rem",
         });
       } else {
