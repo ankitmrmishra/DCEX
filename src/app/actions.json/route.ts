@@ -1,24 +1,19 @@
-// import { ACTIONS_CORS_HEADERS, ActionsJson } from "@solana/actions";
+import { ACTIONS_CORS_HEADERS, ActionsJson } from "@solana/actions";
 
-// export const GET = async () => {
-//   const payload: ActionsJson = {
-//     rules: [
-//       // Map all root level routes to an action
-//       {
-//         pathPattern: "/",
-//         apiPath: "/api/donate/",
-//       },
-//     ],
-//   };
+export const GET = async () => {
+  const payload: ActionsJson = {
+    rules: [
+      // map all root level routes to an action
+      {
+        pathPattern: "/",
+        apiPath: "/api/donate/",
+      },
+    ],
+  };
 
-//   return new Response(JSON.stringify(payload), {
-//     headers: ACTIONS_CORS_HEADERS,
-//   });
-// };
+  return Response.json(payload, {
+    headers: ACTIONS_CORS_HEADERS,
+  });
+};
 
-// // DO NOT FORGET TO INCLUDE THE `OPTIONS` HTTP METHOD
-// // THIS WILL ENSURE CORS WORKS FOR BLINKS
-// export const OPTIONS = GET;
-
-
-{/* this is blinks code i will be implementing but it is not working right now  */}
+export const OPTIONS = GET;
