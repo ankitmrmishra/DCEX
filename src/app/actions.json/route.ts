@@ -1,9 +1,7 @@
 import { ACTIONS_CORS_HEADERS, ActionsJson } from "@solana/actions";
-
 export const GET = async () => {
   const payload: ActionsJson = {
     rules: [
-      // map all root level routes to an action
       {
         pathPattern: "/",
         apiPath: "/api/donate/",
@@ -12,7 +10,12 @@ export const GET = async () => {
   };
 
   return Response.json(payload, {
-    headers: ACTIONS_CORS_HEADERS,
+    headers: {
+       'Content-Type': 'application/json' ,
+      ...ACTIONS_CORS_HEADERS, // Spreading the CORS headers from the imported constant
+      // You can add more custom headers here if needed
+      // { 'Custom-Header': 'Custom-Value' },
+  }
   });
 };
 
