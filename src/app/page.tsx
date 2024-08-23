@@ -6,10 +6,9 @@ import DashBoard from "./Dashboard/page";
 
 export default async function Home() {
   
-  const session = await getSession()
   return (
     <main className="bg-black">
-      {session?.user ? <HeroPage />  :  <DashBoard />}
+       <HeroPage />  
       
     </main>
   );

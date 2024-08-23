@@ -10,12 +10,7 @@ export const GET = async () => {
   };
 
   return Response.json(payload, {
-    headers: {
-       'Content-Type': 'application/json' ,
-      ...ACTIONS_CORS_HEADERS, // Spreading the CORS headers from the imported constant
-      // You can add more custom headers here if needed
-      // { 'Custom-Header': 'Custom-Value' },
-  }
+    headers: ACTIONS_CORS_HEADERS
   });
 };
 
