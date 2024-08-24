@@ -15,19 +15,21 @@ import {
 } from "@solana/web3.js";
 import { DEFAULT_SOL_ADDRESS, DEFAULT_SOL_AMOUNT } from "./const";
 
+
+
 export const GET = async (req: Request) => {
   try {
     const requestUrl = new URL(req.url);
     const { toPubkey } = validatedQueryParams(requestUrl);
 
     const baseHref = new URL(
-      `/api/actions/transfer-sol?to=${toPubkey.toBase58()}`,
+      `/api/donate?to=${toPubkey.toBase58()}`,
       requestUrl.origin,
     ).toString();
 
     const payload: ActionGetResponse = {
       title: "Transfer Native SOL",
-      icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7dPPWr-BRKzBy_Fig0v_snt-_onQj9Pl5xA&s",
+      icon: "https://i.ibb.co/Zf5Fctp/Screenshot-2024-08-24-181920.png",
       description: "Transfer SOL to author",
       label: "Transfer", // this value will be ignored since `links.actions` exists
       links: {
@@ -36,10 +38,7 @@ export const GET = async (req: Request) => {
             label: "Send 1 SOL", // button text
             href: `${baseHref}&amount=${"1"}`,
           },
-          {
-            label: "Send 5 SOL", // button text
-            href: `${baseHref}&amount=${"5"}`,
-          },
+
           {
             label: "Send 10 SOL", // button text
             href: `${baseHref}&amount=${"10"}`,
@@ -73,10 +72,12 @@ export const GET = async (req: Request) => {
     });
   }
 };
-
+export async function OPTIONS(request:Request) {
+  return new Response(null, {headers:ACTIONS_CORS_HEADERS})
+}
 // DO NOT FORGET TO INCLUDE THE `OPTIONS` HTTP METHOD
-// THIS WILL ENSURE CORS WORKS FOR BLINKS
-export const OPTIONS = GET;
+// // THIS WILL ENSURE CORS WORKS FOR BLINKS
+// export const OPTIONS = GET;
 
 export const POST = async (req: Request) => {
   try {
@@ -176,3 +177,41 @@ function validatedQueryParams(requestUrl: URL) {
     toPubkey,
   };
 }
+
+
+
+
+// export async function GET(request:Request) {
+//   const response: ActionGetResponse = {
+//     title: "Transfer Native SOL",
+//     icon: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS7dPPWr-BRKzBy_Fig0v_snt-_onQj9Pl5xA&s",
+//     description: "Transfer SOL to ANKIT",
+//     label: "Transfer", // this value will be ignored since `links.actions` exists
+//     error: {
+//       message: "Hello Ankit"
+//     },
+//     type: "action"
+//   }
+//   return Response.json(response, {
+//     headers: ACTIONS_CORS_HEADERS
+//   })
+
+ 
+//         }
+
+//         // export const OPTIONS = GET;
+
+// export async function OPTIONS(request: Request){
+//   return new Response(null, {headers: ACTIONS_CORS_HEADERS})
+// }
+
+
+//         export async function POST(request:Request) {
+//           const postRequest: ActionPostRequest = await request.json();
+//           const userPubKey = postRequest.account
+// const response: ActionPostResponse ={
+//   transaction: "",
+//   message: "hello" + userPubKey
+// }
+// return Response.json(response, {headers: ACTIONS_CORS_HEADERS})
+//         }
