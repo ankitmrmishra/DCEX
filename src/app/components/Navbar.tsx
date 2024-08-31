@@ -7,12 +7,18 @@ import {
   WalletIcon,
 } from "@solana/wallet-adapter-react-ui";
 import { useRouter } from "next/navigation";
+import { SiSolana } from "react-icons/si";
 
 const Navbar = () => {
   const session = useSession();
   const router = useRouter();
   const [buttonStyle, setButtonStyle] = useState({});
   const [isMenuOpen, setIsMenuOpen] = useState(false); // State to handle the menu visibility
+
+
+  const BlinkShare = () =>{
+    
+  }
 
   useEffect(() => {
     const updateButtonStyle = () => {
@@ -84,6 +90,13 @@ const Navbar = () => {
             style={buttonStyle}
             className="bg-blue-500 hover:bg-blue-700 text-white font-bold  px-4 rounded"
           />
+        </div>
+        <div className="hidden lg:flex justify-center items-center align-middle">
+          <div
+            
+            className="bg-white flex justify-center items-center align-middle gap-2  hover:bg-white/85 hover:cursor-pointer text-black font-bold  px-4 py-2 rounded"
+          >CrowdFunding <SiSolana/>
+          </div>
         </div>
 
         {/* Burger Menu Content */}

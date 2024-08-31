@@ -13,14 +13,14 @@ import {
   SystemProgram,
   Transaction,
 } from "@solana/web3.js";
-import { DEFAULT_SOL_ADDRESS, DEFAULT_SOL_AMOUNT } from "./const";
+import { DEFAULT_SOL_AMOUNT , getDefaultOrUserPubKey} from "./const";
 
 
 
 export const GET = async (req: Request) => {
   try {
     const requestUrl = new URL(req.url);
-    const { toPubkey } = validatedQueryParams(requestUrl);
+    const { toPubkey } = await validatedQueryParams(requestUrl);
 
     const baseHref = new URL(
       `/api/donate?to=${toPubkey.toBase58()}`,
@@ -38,6 +38,11 @@ export const GET = async (req: Request) => {
             label: "Send 1 SOL", // button text
             href: `${baseHref}&amount=${"1"}`,
           },
+          {
+            label: "Send 5 SOL", // button text
+            href: `${baseHref}&amount=${"5"}`,
+          },
+
 
           {
             label: "Send 10 SOL", // button text
@@ -82,7 +87,7 @@ export async function OPTIONS(request:Request) {
 export const POST = async (req: Request) => {
   try {
     const requestUrl = new URL(req.url);
-    const { amount, toPubkey } = validatedQueryParams(requestUrl);
+    const { amount, toPubkey } = await validatedQueryParams(requestUrl);
 
     const body: ActionPostRequest = await req.json();
 
@@ -150,8 +155,8 @@ export const POST = async (req: Request) => {
   }
 };
 
-function validatedQueryParams(requestUrl: URL) {
-  let toPubkey: PublicKey = DEFAULT_SOL_ADDRESS;
+async function validatedQueryParams(requestUrl: URL) {
+  let toPubkey: PublicKey = await getDefaultOrUserPubKey();
   let amount: number = DEFAULT_SOL_AMOUNT;
 
   try {
