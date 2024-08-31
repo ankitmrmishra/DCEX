@@ -2,23 +2,40 @@
 import React, { useEffect, useState } from "react";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { Button } from "./Button";
-import {
-  WalletMultiButton,
-  WalletIcon,
-} from "@solana/wallet-adapter-react-ui";
+import {WalletMultiButton} from "@solana/wallet-adapter-react-ui";
 import { useRouter } from "next/navigation";
 import { SiSolana } from "react-icons/si";
+import { useWallet } from "@solana/wallet-adapter-react";
+// import '@dialectlabs/blinks/index.css';
+// import { Action, Blink, ActionsRegistry, useAction } from "@dialectlabs/blinks";
+// import { useActionSolanaWalletAdapter } from "@dialectlabs/blinks/hooks/solana"
 
 const Navbar = () => {
   const session = useSession();
   const router = useRouter();
   const [buttonStyle, setButtonStyle] = useState({});
   const [isMenuOpen, setIsMenuOpen] = useState(false); // State to handle the menu visibility
+  
 
 
-  const BlinkShare = () =>{
+  const handleCrowdfunding = async () => {
     
-  }
+
+    try {
+      const response = await fetch(`/api/donate?to=`);
+      const data = await response.json();
+
+      if (data.links && data.links.actions) {
+        // For simplicity, we'll use the first action (Send 1 SOL)
+        const firstAction = data.links.actions[0];
+        router.push(firstAction.href);
+      } else {
+        console.error("Unexpected response format:", data);
+      }
+    } catch (error) {
+      console.error("Error fetching crowdfunding data:", error);
+    }
+  };
 
   useEffect(() => {
     const updateButtonStyle = () => {
@@ -93,6 +110,7 @@ const Navbar = () => {
         </div>
         <div className="hidden lg:flex justify-center items-center align-middle">
           <div
+          onClick={handleCrowdfunding}
             
             className="bg-white flex justify-center items-center align-middle gap-2  hover:bg-white/85 hover:cursor-pointer text-black font-bold  px-4 py-2 rounded"
           >CrowdFunding <SiSolana/>
