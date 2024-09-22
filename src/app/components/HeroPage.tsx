@@ -7,6 +7,8 @@ import { signIn, signOut, useSession } from "next-auth/react";
 import { Button } from "./Button";
 import { Archivo } from "next/font/google";
 import { useRouter } from "next/navigation";
+import TrustedByCompanies from "./ui/TrustedBy";
+import { cn } from "@/lib/utils";
 
 export const archivo = Archivo({
   subsets: ["latin"],
@@ -17,41 +19,47 @@ const HeroPage = () => {
   const router = useRouter();
 
   return (
-    <main className={archivo.className}>
-      <div className='bg-black  text-center   max-h-max text-white flex justify-center items-center align-middle lg:p-16 p-6 '>
-        <div className='textAreahere  px-5 flex flex-col justify-center items-center align-middle text-center py-16'>
-          <span className='lg:text-8xl text-3xl text-white font-bold '>
-          Secure Your Digital Assets with <span className="text-[#ff6e6c]">BharatWallet</span> 
+    <main className={cn(archivo.className)}>
+      <div className="bg-background dark text-foreground text-center   max-h-max text- flex justify-center items-center align-middle  p-6  md:p-28 ">
+        <div className="textAreahere  px-48 flex flex-col justify-center items-center align-middle text-center py-16">
+          <span className="lg:text-7xl text-3xl text-white font-bold ">
+            Unlock Your Crypto Future with{" "}
+            <span className="text-[#F5E876]">BharatWallet</span>
           </span>{" "}
           <br />
-          <span className='lg:text-xl text-sm text-[#94a1b2 ] italic'>
-          The fastest, most secure web-based wallet for your crypto needs
+          <span className="lg:text-xl text-sm text-[#969696] italic">
+            Create a fortified, private crypto wallet in moments with our
+            intuitive generator. Experience effortless security and peace of
+            mind, enhanced by Google Auth for your convenience.
           </span>
-          <div className='pt-4'>
-            Powered By
-            <Image width={500} height={100} src={Solanaimg} alt='' />
-          </div>
-          <div className='pt-8'>
+          <div className="pt-8">
             {session.data?.user ? (
               <Button
-              disable={false}
+                disable={false}
                 onClick={() => {
                   router.push("/Dashboard");
-                }}>
+                }}
+                className="bg-white"
+              >
                 Go To Dashboard
               </Button>
             ) : (
               <Button
-              disable={false}
+                disable={false}
                 onClick={() => {
                   signIn();
-                }}>
+                }}
+                className=""
+              >
                 Login
               </Button>
             )}
           </div>
         </div>
       </div>
+      <section className="flex justify-center align-middle items-center py-5 ">
+        <TrustedByCompanies />
+      </section>
     </main>
   );
 };
