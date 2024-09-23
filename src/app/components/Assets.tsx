@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import { TokenWithBalance } from "../api/hooks/useTokens";
 import { Card, CardContent } from "./ui/card";
 import { ChevronRight, Plus, Send } from "lucide-react";
@@ -41,7 +42,7 @@ function Assets({
   }
 
   return (
-    <div className="grid grid-cols-2 gap-4">
+    <div className="md:grid grid-cols-2 gap-4 flex flex-col justify-center align-middle">
       <div className="w-full grid grid-cols-1 col-span-1">
         <div className="text-sm text-black flex flex-col lg:flex-row justify-center lg:justify-between align-middle items-center gap-4 bg-white p-5 rounded-xl border-2 border-gray-300">
           <div className="flex flex-col text-center lg:text-left">
@@ -63,12 +64,12 @@ function Assets({
           </button>
         </div>
         <Tabs defaultValue="Tokens" className="w-full ">
-          <TabsList className="bg-white text-black mt-5">
+          <TabsList className="bg-[#F5E876] text-black mt-5">
             <TabsTrigger value="Tokens">Tokens</TabsTrigger>
             <TabsTrigger value="Collectibles">Collectibles</TabsTrigger>
           </TabsList>
           <TabsContent value="Tokens">
-            <div className="bg-gray-100 p-5 mt-5 rounded-lg  shadow-lg col-span-2">
+            <div className="bg-white border-2 border-gray-400 p-5 mt-5 rounded-lg  shadow-lg col-span-2">
               {tokenBalances?.tokens &&
                 tokenBalances.tokens.map((token, index) => (
                   <TableRepresnation
@@ -83,7 +84,7 @@ function Assets({
             </div>
           </TabsContent>
           <TabsContent value="Collectibles">
-            No Collectibles are presemt right now{" "}
+            <NoNFTsComponent />
           </TabsContent>
         </Tabs>
       </div>
@@ -113,7 +114,7 @@ function TableRepresnation({
     <div className="flex justify-between align-middle items-center mt-4">
       <div className="flex gap-2 items-center">
         <img
-          className="object-cover w-10 h-10 rounded-full bg-gray-100"
+          className="object-cover w-10 h-10 rounded-full bg-white"
           src={imageLink}
           alt=""
         />
@@ -209,5 +210,25 @@ const RecentActivities = () => {
         </div>
       </CardContent>
     </Card>
+  );
+};
+
+const NoNFTsComponent: React.FC = () => {
+  return (
+    <div className="bg-white border-2 border-gray-400 p-6 rounded-lg shadow-lg text-center w-full mx-auto">
+      <div className="bg-gray-300 p-4 rounded-lg inline-block mb-4">
+        <Image
+          src="/placeholder-image.svg"
+          alt="Placeholder"
+          width={24}
+          height={24}
+          className=""
+        />
+      </div>
+      <h2 className="text-black text-xl font-bold mb-2">No NFTs</h2>
+      <p className="text-gray-800 text-sm">
+        Get started with your first NFT by visiting your favorite marketplace.
+      </p>
+    </div>
   );
 };

@@ -1,4 +1,5 @@
 "use client";
+
 import { PublicKey } from "@solana/web3.js";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -26,20 +27,21 @@ import {
 
 type Tab = "DashBoard" | "send" | "add_funds" | "swap" | "withdraw";
 
-const tabs: { id: Tab; name: string }[] = [
-  { id: "DashBoard", name: "DashBoard" },
-  { id: "send", name: "Send" },
-  { id: "add_funds", name: "Add funds" },
-  { id: "withdraw", name: "Withdraw" },
-  { id: "swap", name: "Swap" },
+const tabs: { id: Tab; name: string; icon: React.ReactNode }[] = [
+  { id: "DashBoard", name: "DashBoard", icon: <Wallet className="w-5 h-5" /> },
+  { id: "send", name: "Send", icon: <Send className="w-5 h-5" /> },
+  { id: "add_funds", name: "Add funds", icon: <Plus className="w-5 h-5" /> },
+  { id: "withdraw", name: "Withdraw", icon: <LogOut className="w-5 h-5" /> },
+  { id: "swap", name: "Swap", icon: <ChevronRight className="w-5 h-5" /> },
 ];
 
 const Profile = ({ publicKey }: { publicKey: string }) => {
-  const [activetab, setactiveTab] = useState("Tokens");
+  const [activetab, setactiveTab] = useState<Tab>("DashBoard");
   const { tokenBalances, loading } = useTokens(publicKey);
   const session = useSession();
   const router = useRouter();
-  const breakpoint = useMediaQuery(786);
+  const isLargeScreen = useMediaQuery(786);
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   if (session.status === "loading") {
     return (
@@ -51,77 +53,66 @@ const Profile = ({ publicKey }: { publicKey: string }) => {
 
   if (!session.data?.user) {
     router.push("/");
+    return null;
   }
 
   return (
-    <div className="grid grid-cols-5  flex-col lg:flex-row justify-center items-center align-middle p-5 bg-gray-200 rounded-lg gap-4  w-[90%]  mx-auto max-h-max ">
-      {/* <div className="name_and_details relative  flex flex-col lg:flex-row items-center justify-center lg:justify-start gap-3 align-middle p-5 bg-green-400">
-        <img
-          className="rounded-full border border-white w-16 h-16"
-          src={session.data?.user?.image ?? ""}
-          alt=""
-        />
-        <div className="greeting text-center lg:text-left text-2xl">
-          <span>Welcome Back, </span>
-          <span className="text-blue-600">{session.data?.user?.name}</span>
-        </div>
-      </div> */}
-      <div className=" h-full z-50  bg-black transform transition-transform duration-300 ease-in-out col-span-1 rounded-xl">
-        <nav className="p-4 space-y-2">
-          <div className="flex flex-wrap justify-center lg:justify-start gap-2 m-5 flex-col">
-            {tabs.map((tab) => (
-              <TabButton
-                className="bg-black text-white"
-                key={tab.id}
-                active={tab.id === activetab}
-                onClick={() => {
-                  setactiveTab(tab.id);
-                }}
-              >
-                {tab.name}
-              </TabButton>
-            ))}
-          </div>
+    <div className="flex flex-col md:flex-row bg-white rounded-lg overflow-hidden max-w-7xl mx-auto p-4">
+      {/* Sidebar Toggle Button (visible on small screens) */}
+      <button
+        className="md:hidden p-4 bg-black text-white"
+        onClick={() => setIsSidebarOpen(!isSidebarOpen)}
+      >
+        {isSidebarOpen ? <X /> : <Menu />}
+      </button>
+
+      {/* Sidebar */}
+      <div
+        className={`${
+          isSidebarOpen ? "block" : "hidden"
+        } md:block bg-black text-white w-full md:w-64 p-4 transition-all duration-300 ease-in-out `}
+      >
+        <nav className="space-y-2">
+          {tabs.map((tab) => (
+            <TabButton
+              key={tab.id}
+              active={tab.id === activetab}
+              onClick={() => {
+                setactiveTab(tab.id);
+                setIsSidebarOpen(false);
+              }}
+              className="flex items-center w-full p-2 rounded-lg hover:bg-gray-700 transition-colors"
+            >
+              {tab.icon}
+              <span className="ml-2">{tab.name}</span>
+            </TabButton>
+          ))}
         </nav>
       </div>
-      <div className="col-span-4 ">
-        <div
-          className={`${
-            activetab === "DashBoard" ? "visible" : "hidden"
-          } w-full`}
-        >
+
+      {/* Main Content */}
+      <div className="flex-1 p-4 overflow-auto">
+        <div className={`${activetab === "DashBoard" ? "block" : "hidden"}`}>
           <Assets
             tokenBalances={tokenBalances}
             loading={loading}
             publicKey={publicKey}
           />
         </div>
-        <div
-          className={`${activetab === "swap" ? "visible" : "hidden"} w-full`}
-        >
+        <div className={`${activetab === "swap" ? "block" : "hidden"}`}>
           <Swap
             tokenBalances={tokenBalances}
             loading={loading}
             publicKey={publicKey}
           />
         </div>
-        <div
-          className={`${activetab === "send" ? "visible" : "hidden"} w-full`}
-        >
+        <div className={`${activetab === "send" ? "block" : "hidden"}`}>
           <ComingSoon />
         </div>
-        <div
-          className={`${
-            activetab === "add_funds" ? "visible" : "hidden"
-          } w-full`}
-        >
+        <div className={`${activetab === "add_funds" ? "block" : "hidden"}`}>
           <AddFunds publicKey={publicKey} />
         </div>
-        <div
-          className={`${
-            activetab === "withdraw" ? "visible" : "hidden"
-          } w-full`}
-        >
+        <div className={`${activetab === "withdraw" ? "block" : "hidden"}`}>
           <ComingSoon />
         </div>
       </div>
