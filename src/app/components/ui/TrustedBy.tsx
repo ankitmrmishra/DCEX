@@ -1,33 +1,33 @@
 const TrustedByCompanies = () => {
   return (
-    <div className=" w-[70%] bg-white rounded-3xl p-7 shadow-lg shadow-gray-700 drop-shadow-2xl ">
+    <div className=" md:w-[100%] rounded-3xl flex justify-center align-middle items-center flex-col ">
       <div className="">
-        <h1 className="text-black font-semibold mb-3 text-5xl flex justify-center align-middle items-center">
+        <h1 className="text-white font-semibold mb-3 md:text-5xl text-3xl flex justify-center align-middle items-center">
           We are Trusted By{" "}
         </h1>
       </div>
 
-      <div className="companies grid grid-cols-2 gap-4 sm:grid-cols-4 md:grid-cols-5">
+      <div className="companies md:flex md:gap-3 grid grid-cols-5 gap-8">
         {web3Companies.map((company, index) => {
           return (
             <div
               key={index}
-              className="company-card border rounded-3xl p-4 text-center bg-black "
+              className="company-card border border-black/10  md:p-4 flex justify-center align-middle items-center   text-center rounded-full "
             >
               <a
                 href={company.website}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="flex justify-center flex-col items-center align-middle  text-center"
+                className=" "
               >
                 <img
                   src={company.image}
                   alt={`${company.name} logo`}
-                  className="company-logo h-14 "
+                  className="company-logo md:h-14 h-7 "
                 />
-                <h2 className="company-name font-semibold text-white ">
+                {/* <h2 className="company-name font-semibold text-[#F5E876]  text-sm">
                   {company.name}
-                </h2>
+                </h2> */}
               </a>
             </div>
           );

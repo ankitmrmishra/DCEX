@@ -2,6 +2,13 @@ import { useState, useEffect } from "react";
 import { TokenWithBalance } from "../api/hooks/useTokens";
 import { Card, CardContent } from "./ui/card";
 import { ChevronRight, Plus, Send } from "lucide-react";
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "../components/ui/Tabs";
+
 function Assets({
   publicKey,
   tokenBalances,
@@ -55,19 +62,30 @@ function Assets({
             {copied ? "Copied" : "Your Wallet Address"}
           </button>
         </div>
-        <div className="bg-gray-100 p-5 mt-5 rounded-lg shadow-black/45 shadow-lg col-span-2">
-          {tokenBalances?.tokens &&
-            tokenBalances.tokens.map((token, index) => (
-              <TableRepresnation
-                key={index}
-                imageLink={token.image}
-                price={token.price}
-                currentHolding={token.balance}
-                name={token.name}
-                balance={token.usdBalance}
-              />
-            ))}
-        </div>
+        <Tabs defaultValue="Tokens" className="w-full ">
+          <TabsList className="bg-white text-black mt-5">
+            <TabsTrigger value="Tokens">Tokens</TabsTrigger>
+            <TabsTrigger value="Collectibles">Collectibles</TabsTrigger>
+          </TabsList>
+          <TabsContent value="Tokens">
+            <div className="bg-gray-100 p-5 mt-5 rounded-lg  shadow-lg col-span-2">
+              {tokenBalances?.tokens &&
+                tokenBalances.tokens.map((token, index) => (
+                  <TableRepresnation
+                    key={index}
+                    imageLink={token.image}
+                    price={token.price}
+                    currentHolding={token.balance}
+                    name={token.name}
+                    balance={token.usdBalance}
+                  />
+                ))}
+            </div>
+          </TabsContent>
+          <TabsContent value="Collectibles">
+            No Collectibles are presemt right now{" "}
+          </TabsContent>
+        </Tabs>
       </div>
       <div className="col-span-1 ">
         <RecentActivities />
@@ -118,28 +136,28 @@ function TableRepresnation({
 
 const RecentActivities = () => {
   return (
-    <Card className="overflow-hidden bg-white text-black border-2 border-gray-300 dark:border-gray-700 h-full">
+    <Card className="overflow-hidden bg-white text-black border-2 border-gray-300 dark:border-gray-700 max-h-max">
       <CardContent className="p-6">
         <h2 className="text-2xl font-bold mb-4">Recent Transactions</h2>
         <div className="space-y-4">
           {[
             {
               type: "Received",
-              amount: "0.1337 BTC",
+              amount: "0.1337 SOL",
               value: "$2,674.00",
               from: "0x1234...5678",
               time: "2 hours ago",
             },
             {
               type: "Sent",
-              amount: "22.5 ETH",
+              amount: "22.5 USDC",
               value: "$8,910.75",
               to: "0x8765...4321",
               time: "1 day ago",
             },
             {
               type: "Swapped",
-              amount: "1000 DOT to 5.5 ETH",
+              amount: "1000 USDC to 5.5 SOL",
               value: "$2,178.00",
               time: "3 days ago",
             },

@@ -20,7 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={cn(inter.className, "bg-foreground")}>
+      <body className={cn(inter.className, "bg-black")}>
         <WalletAdapter>
           <Providers>
             <Navbar />
