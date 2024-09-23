@@ -5,6 +5,7 @@ import { TokenWithBalance } from "../api/hooks/useTokens";
 import { debounce } from "lodash";
 import axios from "axios";
 import { Button } from "./Button";
+import { cn } from "@/lib/utils";
 
 export function Swap({
   publicKey,
@@ -83,21 +84,21 @@ export function Swap({
   const currentBalance = tokenBalances?.tokens.find(
     (x) => x.name === quoteAssest.name
   )?.balance;
-  
+
   const disabled = Number(currentBalance) < Number(quoteAmmount);
 
   return (
-    <div className='p-4 max-w-md mx-auto bg-white rounded-lg shadow-lg'>
-      <div className='mb-4'>
-        <span className='text-2xl text-black font-bold'>Swap Tokens</span>
+    <div className="p-4 max-w-md mx-auto bg-white rounded-lg shadow-lg">
+      <div className="mb-4">
+        <span className="text-2xl text-black font-bold">Swap Tokens</span>
       </div>
-      <div className='relative'>
+      <div className="relative ">
         <SwapInputrow
           onSelect={(asset) => {
             setBaseAsset(asset);
           }}
           selectedToken={baseAsset}
-          title='You Pay'
+          title="You Pay"
           bottomborderenabled={false}
           topborderenabled={true}
           currentbalance={` ${
@@ -118,7 +119,8 @@ export function Swap({
             setBaseAsset(quoteAssest);
             setQuoteAsset(baseassettemp);
           }}
-          className='absolute left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-slate-200 text-black rounded-full p-2'>
+          className="absolute left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-slate-200 text-black rounded-full p-2"
+        >
           <IoSwapVerticalOutline />
         </div>
 
@@ -129,7 +131,7 @@ export function Swap({
             setQuoteAsset(asset);
           }}
           selectedToken={quoteAssest}
-          title='You Get'
+          title="You Get"
           topborderenabled={false}
           bottomborderenabled={true}
           currentbalance={` ${currentBalance} ${quoteAssest.name}`}
@@ -139,10 +141,14 @@ export function Swap({
           }}
         />
       </div>
-      <div className='flex justify-end items-end pt-5'>
+      <div className="flex justify-end items-end pt-5">
         <Button
-        disable={disabled}
-          
+          className={cn(
+            disabled
+              ? "bg-black/20 hover:cursor-not-allowed"
+              : "bg-black text-white "
+          )}
+          disable={disabled}
           onClick={async () => {
             try {
               const res = await axios.post("/api/swap", {
@@ -152,9 +158,10 @@ export function Swap({
                 alert("Swap done!");
               }
             } catch (e) {
-              alert("Error while sending a txn");
+              alert(e);
             }
-          }}>
+          }}
+        >
           {disabled ? "Insufficient balance" : "Swap"}
         </Button>
       </div>
@@ -187,20 +194,21 @@ function SwapInputrow({
 }) {
   return (
     <div
-      className={`border flex justify-between items-center p-4 ${
+      className={`border flex flex-col justify-between items-start p-4 ${
         topborderenabled ? "rounded-t-xl" : ""
-      } ${bottomborderenabled ? "rounded-b-xl" : ""} `}>
-      <div className='flex flex-col'>
-        <span className='text-sm text-gray-500'>{title}</span>
+      } ${bottomborderenabled ? "rounded-b-xl" : ""} `}
+    >
+      <div className="flex flex-col">
+        <span className="text-sm text-gray-500">{title}</span>
         <AssetSelector onSelect={onSelect} selectedToken={selectedToken} />
-        <span className='text-sm text-gray-500'>
+        <span className="text-sm text-gray-500">
           current balance ~ {currentbalance}
         </span>
       </div>
       <input
         disabled={inputDisabled}
-        placeholder='0'
-        className='border-none outline-none text-right p-2 text-4xl w-32'
+        placeholder="0"
+        className="border-none outline-none text-right p-2 text-4xl w-full"
         value={inputLoading ? "...." : amount}
         onChange={(e) => {
           onAmountchange(e.target.value);
@@ -218,7 +226,7 @@ export function AssetSelector({
   onSelect: (asset: TokenDetails) => void;
 }) {
   return (
-    <div className='w-full mt-2'>
+    <div className="w-full mt-2">
       <select
         onChange={(e) => {
           const selectedToken = SUPPORTED_TOKENS.find(
@@ -228,7 +236,8 @@ export function AssetSelector({
             onSelect(selectedToken);
           }
         }}
-        className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5'>
+        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+      >
         {SUPPORTED_TOKENS.map((token) => (
           <option key={token.name} selected={selectedToken.name == token.name}>
             {token.name}

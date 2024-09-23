@@ -1,10 +1,9 @@
 "use client";
 
-import { PublicKey } from "@solana/web3.js";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
-import { TokenWithBalance, useTokens } from "../api/hooks/useTokens";
+import React, { useState } from "react";
+import { useTokens } from "../api/hooks/useTokens";
 import { TabButton } from "./Button";
 import { Swap } from "./Swap";
 import { useMediaQuery } from "../api/hooks/useMediaQuery";
@@ -12,15 +11,11 @@ import AddFunds from "./AddFunds";
 import DashboardSkeleton from "../Dashboard/Skeleton";
 import Assets from "./Assets";
 import {
-  Moon,
-  Sun,
   Menu,
   X,
   Wallet,
   Send,
   Plus,
-  Bell,
-  User,
   LogOut,
   ChevronRight,
 } from "lucide-react";
@@ -39,6 +34,8 @@ const Profile = ({ publicKey }: { publicKey: string }) => {
   const [activetab, setactiveTab] = useState<Tab>("DashBoard");
   const { tokenBalances, loading } = useTokens(publicKey);
   const session = useSession();
+  console.log(session);
+
   const router = useRouter();
   const isLargeScreen = useMediaQuery(786);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -81,7 +78,7 @@ const Profile = ({ publicKey }: { publicKey: string }) => {
                 setactiveTab(tab.id);
                 setIsSidebarOpen(false);
               }}
-              className="flex items-center w-full p-2 rounded-lg hover:bg-gray-700 transition-colors"
+              className="flex items-center w-full p-2 rounded-lg hover:bg-[#F5E876] transition-colors"
             >
               {tab.icon}
               <span className="ml-2">{tab.name}</span>

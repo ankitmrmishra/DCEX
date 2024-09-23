@@ -18,7 +18,7 @@ export const Button = ({
         disabled={disable}
         onClick={onClick}
         className={cn(
-          "bg-white text-black hover:bg-[#F5E876]  font-bold py-2 px-4 rounded",
+          "bg-white text-black  font-bold py-2 px-4 rounded",
           className
         )}
       >
