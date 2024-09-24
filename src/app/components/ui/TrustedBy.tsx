@@ -1,42 +1,46 @@
-const TrustedByCompanies = () => {
-  return (
-    <div className=" md:w-[100%] rounded-3xl flex justify-center align-middle items-center flex-col ">
-      <div className="">
-        <h1 className="text-white font-semibold mb-3 md:text-5xl text-3xl flex justify-center align-middle items-center">
-          We are Trusted By{" "}
-        </h1>
-      </div>
+import React, { useEffect, useRef } from "react";
+import { motion } from "framer-motion";
 
-      <div className="companies md:flex md:gap-3 grid grid-cols-5 gap-8">
-        {web3Companies.map((company, index) => {
-          return (
-            <div
-              key={index}
-              className="company-card border border-black/10  md:p-4 flex justify-center align-middle items-center   text-center rounded-full "
-            >
-              <a
-                href={company.website}
-                target="_blank"
-                rel="noopener noreferrer"
-                className=" "
-              >
-                <img
-                  src={company.image}
-                  alt={`${company.name} logo`}
-                  className="company-logo md:h-14 h-7 "
-                />
-                {/* <h2 className="company-name font-semibold text-[#F5E876]  text-sm">
-                  {company.name}
-                </h2> */}
-              </a>
+export function TrustedByCompanies() {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [duplicatedLogos, setDuplicatedLogos] = React.useState(web3Companies);
+
+  useEffect(() => {
+    const duplicateLogos = () => {
+      setDuplicatedLogos([...web3Companies, ...web3Companies]);
+    };
+    duplicateLogos();
+  }, []);
+
+  return (
+    <div className="w-full bg-black text-white py-12 overflow-hidden">
+      <h2 className="text-4xl font-bold text-center mb-8">We are Trusted By</h2>
+      <div className="relative w-full">
+        <motion.div
+          ref={containerRef}
+          className="flex"
+          animate={{
+            x: [0, -50 * duplicatedLogos.length],
+          }}
+          transition={{
+            x: {
+              repeat: Infinity,
+              repeatType: "loop",
+              duration: 50,
+              ease: "linear",
+            },
+          }}
+        >
+          {duplicatedLogos.map((logo, index) => (
+            <div key={index} className="flex-shrink-0 w-[100px] mx-4">
+              <img src={logo.image} alt={logo.name} className="w-16 h-auto" />
             </div>
-          );
-        })}
+          ))}
+        </motion.div>
       </div>
     </div>
   );
-};
-export default TrustedByCompanies;
+}
 const web3Companies = [
   {
     name: "Solana Labs",

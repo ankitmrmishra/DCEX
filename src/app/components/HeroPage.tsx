@@ -1,11 +1,11 @@
 "use client";
-import React from "react";
+import React, { useEffect, useRef } from "react";
 
 import { signIn, signOut, useSession } from "next-auth/react";
 import { Button } from "./Button";
 import { Archivo } from "next/font/google";
 import { useRouter } from "next/navigation";
-import TrustedByCompanies from "./ui/TrustedBy";
+import { TrustedByCompanies } from "./ui/TrustedBy";
 import { cn } from "@/lib/utils";
 import {
   Shield,
@@ -16,6 +16,9 @@ import {
   Star,
   CreditCard,
 } from "lucide-react";
+
+import { ChevronDown } from "lucide-react";
+import { motion } from "framer-motion";
 
 export const archivo = Archivo({
   subsets: ["latin"],
@@ -144,6 +147,9 @@ const HeroPage = () => {
             </div>
           </div>
         </div>
+      </section>
+      <section className="flex justify-center align-middle items-center">
+        <FAQ />
       </section>
       <section className="">
         <div className="bg-black">
@@ -315,7 +321,7 @@ const HeroPage = () => {
           </div>
           <div className="mt-16 border-t border-gray-900/10 pt-8 sm:mt-20 lg:mt-24">
             <p className="text-xs leading-5 text-[#F5E876]">
-              &copy; {new Date().getFullYear()} CryptoVault, Inc. All rights
+              &copy; {new Date().getFullYear()} BharatWallet, Inc. All rights
               reserved.
             </p>
           </div>
@@ -326,3 +332,65 @@ const HeroPage = () => {
 };
 
 export default HeroPage;
+
+const faqs = [
+  {
+    question: "What is BharatWallet?",
+    answer:
+      "BharatWallet is a secure and user-friendly crypto wallet designed for the Solana blockchain. It offers a range of features including secure key management, fast transactions, and DApp integration.",
+  },
+  {
+    question: "How secure is BharatWallet?",
+    answer:
+      "BharatWallet prioritizes security. Your private keys are encrypted and never leave your device, ensuring maximum security for your assets. We also use Google Auth for an additional layer of security.",
+  },
+  {
+    question: "What features does BharatWallet offer?",
+    answer:
+      "BharatWallet offers a range of features including secure key management, fast transactions, DApp integration, token swaps, NFT support, and multi-account management.",
+  },
+  {
+    question: "Can I interact with DApps using BharatWallet?",
+    answer:
+      "Yes, BharatWallet allows you to seamlessly interact with your favorite Solana DApps directly from the wallet interface.",
+  },
+  {
+    question: "Does BharatWallet support NFTs?",
+    answer:
+      "Yes, BharatWallet fully supports NFTs. You can view, send, and receive NFTs with full metadata support.",
+  },
+  {
+    question: "How fast are transactions on BharatWallet?",
+    answer:
+      "BharatWallet leverages the Solana network to provide lightning-fast transactions with minimal fees.",
+  },
+];
+
+function FAQ() {
+  return (
+    <section
+      className={cn(archivo.className, "bg-black text-white py-16 w-1/2")}
+    >
+      <div className="container mx-auto px-4">
+        <h2 className="text-3xl font-bold text-center mb-12 text-white">
+          Frequently Asked Questions
+        </h2>
+        <div className="space-y-6">
+          {faqs.map((faq, index) => (
+            <details key={index} className="group">
+              <summary className="flex justify-between items-center font-medium cursor-pointer list-none ">
+                <span className="text-lg">{faq.question}</span>
+                <span className="transition group-open:rotate-180">
+                  <ChevronDown size={24} />
+                </span>
+              </summary>
+              <p className="rounded-xl mt-3 group-open:animate-fadeIn p-5 bg-black text-[#F5E876] ">
+                {faq.answer}
+              </p>
+            </details>
+          ))}
+        </div>
+      </div>
+    </section>
+  );
+}
