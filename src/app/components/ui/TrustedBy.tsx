@@ -32,7 +32,10 @@ export function TrustedByCompanies() {
           }}
         >
           {duplicatedLogos.map((logo, index) => (
-            <div key={index} className="flex-shrink-0 w-[100px] mx-4">
+            <div
+              key={index}
+              className="flex-shrink-0 md:w-[100px] w-[40px] mx-4"
+            >
               <img src={logo.image} alt={logo.name} className="w-16 h-auto" />
             </div>
           ))}

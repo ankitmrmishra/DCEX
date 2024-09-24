@@ -7,18 +7,9 @@ import { Archivo } from "next/font/google";
 import { useRouter } from "next/navigation";
 import { TrustedByCompanies } from "./ui/TrustedBy";
 import { cn } from "@/lib/utils";
-import {
-  Shield,
-  Zap,
-  Globe,
-  ChevronRight,
-  Users,
-  Star,
-  CreditCard,
-} from "lucide-react";
+import { Shield, Zap, Globe, Users, Star, CreditCard } from "lucide-react";
 
 import { ChevronDown } from "lucide-react";
-import { motion } from "framer-motion";
 
 export const archivo = Archivo({
   subsets: ["latin"],
@@ -369,7 +360,7 @@ const faqs = [
 function FAQ() {
   return (
     <section
-      className={cn(archivo.className, "bg-black text-white py-16 w-1/2")}
+      className={cn(archivo.className, "bg-black text-white py-16 md:w-1/2")}
     >
       <div className="container mx-auto px-4">
         <h2 className="text-3xl font-bold text-center mb-12 text-white">
@@ -384,7 +375,7 @@ function FAQ() {
                   <ChevronDown size={24} />
                 </span>
               </summary>
-              <p className="rounded-xl mt-3 group-open:animate-fadeIn p-5 bg-black text-[#F5E876] ">
+              <p className="rounded-xl mt-3 group-open:animate-fadeIn md:p-5 p-2 text-start text-sm md:text-base bg-black text-[#F5E876] ">
                 {faq.answer}
               </p>
             </details>
